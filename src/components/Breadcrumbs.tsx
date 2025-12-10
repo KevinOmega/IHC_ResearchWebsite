@@ -18,16 +18,16 @@ function Breadcrumbs({ items, onNavigate }: BreadcrumbsProps) {
     <nav className="flex items-center space-x-2 text-sm">
       {items.map((item, index) => (
         <div key={index} className="flex items-center">
-          {index > 0 && <ChevronRight className="h-4 w-4 text-gray-400 mx-2" />}
+          {index > 0 && <ChevronRight className="h-4 w-4 text-gray-600 mx-2" />}
           {index === items.length - 1 ? (
-            <span className="text-gray-900 font-medium">{item}</span>
+            <span className="text-gray-950 font-medium">{item}</span>
           ) : (
             <button
               onClick={() => {
                 const view = getViewForBreadcrumb(item);
                 onNavigate(view);
               }}
-              className="text-blue-600 hover:text-blue-700 transition-colors"
+              className="text-primary-blue hover:text-blue-500 transition-colors"
             >
               {item}
             </button>

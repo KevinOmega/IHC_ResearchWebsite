@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Header from './components/Header';
-import SearchBar from './components/SearchBar';
 import Breadcrumbs from './components/Breadcrumbs';
 import GridListing from './components/GridListing';
 import DetailView from './components/DetailView';
@@ -56,16 +55,15 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header onNavigate={handleNavigate} />
-      <SearchBar onSearch={handleSearch} />
+    <div className="min-h-screen bg-gray-100">
+      <Header onNavigate={handleNavigate} onSearch={handleSearch} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Breadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
 
         {currentView === 'home' && (
           <div className="mt-12 text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Portal de Investigación Universitaria</h1>
+            <h1 className="text-4xl font-bold text-gray-950 mb-4">Portal de Investigación Universitaria</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Descubra nuestros centros de investigación, laboratorios y las investigaciones más recientes de nuestra comunidad académica.
             </p>

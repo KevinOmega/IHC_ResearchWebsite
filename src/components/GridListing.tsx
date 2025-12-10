@@ -19,16 +19,16 @@ function GridListing({ items, title, onSelectItem }: GridListingProps) {
 
   const getIcon = (iconName: string) => {
     const IconComponent = Icons[iconName.charAt(0).toUpperCase() + iconName.slice(1).replace(/-([a-z])/g, (g) => g[1].toUpperCase()) as keyof typeof Icons];
-    return IconComponent ? <IconComponent className="h-12 w-12 text-blue-600" /> : null;
+    return IconComponent ? <IconComponent className="h-12 w-12 text-primary-blue" /> : null;
   };
 
   return (
     <div className="mt-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
+        <h1 className="text-3xl font-bold text-gray-950">{title}</h1>
         <button
           onClick={handleSort}
-          className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-950 bg-white border border-blue-100 rounded-lg hover:bg-blue-100 transition-colors"
         >
           <ArrowUpDown className="h-4 w-4" />
           <span>Ordenar por popularidad</span>
@@ -39,16 +39,16 @@ function GridListing({ items, title, onSelectItem }: GridListingProps) {
         {sortedItems.map((item) => (
           <div
             key={item.id}
-            className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow"
+            className="bg-white border border-blue-100 rounded-lg p-6 hover:shadow-lg transition-shadow"
           >
             <div className="flex justify-center mb-4">
               {getIcon(item.logo)}
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">{item.name}</h3>
+            <h3 className="text-lg font-bold text-gray-950 mb-2 text-center">{item.name}</h3>
             <p className="text-sm text-gray-600 mb-4 text-center line-clamp-3">{item.description}</p>
             <button
               onClick={() => onSelectItem(item)}
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+              className="w-full px-4 py-2 text-sm font-medium text-white bg-primary-blue rounded-lg hover:bg-blue-500 transition-colors"
             >
               Ver detalles
             </button>

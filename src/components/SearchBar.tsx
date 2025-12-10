@@ -69,7 +69,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
         id: `hist-${q}`,
         title: q,
         type: 'historial',
-        icon: <Clock className="h-4 w-4 text-gray-400" />
+        icon: <Clock className="h-4 w-4 text-gray-600" />
       }));
     }
 
@@ -82,7 +82,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
           id: center.id,
           title: center.name,
           type: 'centro',
-          icon: <Building2 className="h-4 w-4 text-blue-600" />
+          icon: <Building2 className="h-4 w-4 text-primary-blue" />
         });
       }
     });
@@ -93,7 +93,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
           id: lab.id,
           title: lab.name,
           type: 'laboratorio',
-          icon: <FlaskConical className="h-4 w-4 text-blue-600" />
+          icon: <FlaskConical className="h-4 w-4 text-primary-blue" />
         });
       }
     });
@@ -120,7 +120,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
         id: `hist-${h}`,
         title: h,
         type: 'historial',
-        icon: <Clock className="h-4 w-4 text-gray-400" />
+        icon: <Clock className="h-4 w-4 text-gray-600" />
       });
     });
 
@@ -170,13 +170,14 @@ function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <div className="bg-white border-b border-gray-200">
+    <div className="max-w-md sm:max-w-sm lg:max-w-[16rem] bg-white border-b border-blue-100"
+    style={{width: 600}}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div ref={containerRef} className="relative">
           <form onSubmit={handleSubmit}>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+                <Search className="h-5 w-5 text-gray-600" />
               </div>
               <input
                 ref={inputRef}
@@ -185,11 +186,11 @@ function SearchBar({ onSearch }: SearchBarProps) {
                 onChange={handleInputChange}
                 onFocus={() => setShowSuggestions(true)}
                 placeholder="Buscar centros, laboratorios o investigaciones..."
-                className="block w-full pl-12 pr-14 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="block w-full pl-12 pr-14 py-3 text-base border border-blue-100 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all"
               />
               <button
                 type="submit"
-                className="absolute inset-y-0 right-0 pr-4 flex items-center justify-center text-blue-600 hover:text-blue-700 transition-colors"
+                className="absolute inset-y-0 right-0 pr-4 flex items-center justify-center text-primary-blue hover:text-blue-500 transition-colors"
                 title="Buscar"
               >
                 <ArrowRight className="h-5 w-5" />
@@ -198,20 +199,20 @@ function SearchBar({ onSearch }: SearchBarProps) {
           </form>
 
           {showSuggestions && suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-blue-100 rounded-lg shadow-lg z-50">
               <div className="max-h-96 overflow-y-auto">
                 {suggestions.map((suggestion, index) => (
                   <button
                     key={index}
                     onClick={() => handleSuggestionClick(suggestion)}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 flex items-center space-x-3 transition-colors text-sm"
+                    className="w-full px-4 py-3 text-left hover:bg-blue-100 border-b border-blue-100 last:border-b-0 flex items-center space-x-3 transition-colors text-sm"
                   >
                     <div className="flex-shrink-0">
                       {suggestion.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-gray-900 font-medium truncate">{suggestion.title}</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-gray-950 font-medium truncate">{suggestion.title}</p>
+                      <p className="text-xs text-gray-600">
                         {suggestion.type === 'centro' && 'Centro de Investigación'}
                         {suggestion.type === 'laboratorio' && 'Laboratorio'}
                         {suggestion.type === 'investigacion' && 'Publicación'}
