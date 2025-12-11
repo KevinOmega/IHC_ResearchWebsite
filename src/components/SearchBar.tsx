@@ -170,8 +170,8 @@ function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <div className="max-w-md sm:max-w-sm lg:max-w-[30rem] bg-white border-b border-blue-100"
-    style={{width: 600}}>
+    <div className=" bg-white border-b border-blue-100"
+    style={{width: 500}}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div ref={containerRef} className="relative">
           <form onSubmit={handleSubmit}>
@@ -185,8 +185,8 @@ function SearchBar({ onSearch }: SearchBarProps) {
                 value={query}
                 onChange={handleInputChange}
                 onFocus={() => setShowSuggestions(true)}
-                placeholder="Buscar centros, laboratorios"
-                className="block w-full pl-12 pr-14 py-3 text-base border border-blue-100 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all"
+                placeholder="Buscar centros, laboratorios o investigaciones..."
+                className="block w-full pl-12 pr-14 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent transition-all"
               />
               <button
                 type="submit"
