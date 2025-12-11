@@ -2,7 +2,7 @@ import { ChevronRight } from 'lucide-react';
 
 interface BreadcrumbsProps {
   items: string[];
-  onNavigate: (view: 'home' | 'centers' | 'labs' | 'detail' | 'research') => void;
+  onNavigate: (view: 'home' | 'centers' | 'labs' | 'detail' | 'research' | 'researchDetail') => void;
 }
 
 function Breadcrumbs({ items, onNavigate }: BreadcrumbsProps) {

@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import SearchBar from './SearchBar';
 
 interface HeaderProps {
-  onNavigate: (view: 'home' | 'centers' | 'labs' | 'detail' | 'research') => void;
+  onNavigate: (view: 'home' | 'centers' | 'labs' | 'detail' | 'research' | 'researchDetail') => void;
   onSearch: (query: string, resultItem?: { id: string; type: 'centro' | 'laboratorio' }) => void;
 }
 

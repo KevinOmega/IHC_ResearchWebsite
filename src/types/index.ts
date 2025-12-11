@@ -3,6 +3,13 @@ export interface Publication {
   authors: string;
   year: number;
   journal: string;
+  abstract: string;
+}
+
+export interface ResearchPublicationDetail extends Publication {
+  sourceId: string;
+  sourceName: string;
+  sourceType: 'Centro' | 'Laboratorio';
 }
 
 export interface ContactInfo {

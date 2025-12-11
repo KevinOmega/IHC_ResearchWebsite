@@ -1,22 +1,34 @@
 import { useEffect, useMemo, useState } from 'react';
-import { FileText, Building2, FlaskConical, Download, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Center, Lab } from '../types';
+import { FileText, Building2, FlaskConical, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import type { Center, Lab, ResearchPublicationDetail } from '../types';
 
 interface ResearchViewProps {
   centers: Center[];
   labs: Lab[];
+  onViewPublication: (publication: ResearchPublicationDetail) => void;
 }
-
-const blankPdfBase64 =
-  'JVBERi0xLjQKJdP0zOEKMSAwIG9iago8PAovVHlwZS9DYXRhbG9nCi9QYWdlcyAyIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovVHlwZS9QYWdlcwovS2lkc1sgMyAwIFIgXQovQ291bnQgMQo+PgplbmRvYmoKMyAwIG9iago8PAovVHlwZS9QYWdlCi9NZWRpYUJveFswIDAgNTk1IDIgNzkyXQovUGFyZW50IDIgMCBSCi9SZXNvdXJjZXMgPDwvRm9udCA8PC9GMSA0IDAgUiA+PiA+PgovQ29udGVudHMgNSAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwvVHlwZS9Gb250Ci9TdWJ0eXBlL1R5cGUxCi9CYXNlRm9udC9IZWx2ZXRpY2EKL0VuY29kaW5nL1dpbkFuc2lcPj4KZW5kb2JqCjUgMCBvYmoKPDwvTGVuZ3RoIDY5Pj4Kc3RyZWFtCkJUIAovRjEgMTIgVGYKMTAgNzY1IFRkCigpIFRqCkVUCmVuZHN0cmVhbQplbmRvYmoKc3RhcnR4cmVmCjMwNwpFT0Y=';
 
 const PAGE_SIZE = 15;
 
-function ResearchView({ centers, labs }: ResearchViewProps) {
-  const publications = useMemo(
+function ResearchView({ centers, labs, onViewPublication }: ResearchViewProps) {
+  const publications = useMemo<ResearchPublicationDetail[]>(
     () => [
-      ...centers.flatMap(c => c.publications.map(p => ({ ...p, source: c.name, type: 'Centro' }))),
-      ...labs.flatMap(l => l.publications.map(p => ({ ...p, source: l.name, type: 'Laboratorio' })))
+      ...centers.flatMap(center =>
+        center.publications.map(publication => ({
+          ...publication,
+          sourceId: center.id,
+          sourceName: center.name,
+          sourceType: 'Centro' as const
+        }))
+      ),
+      ...labs.flatMap(lab =>
+        lab.publications.map(publication => ({
+          ...publication,
+          sourceId: lab.id,
+          sourceName: lab.name,
+          sourceType: 'Laboratorio' as const
+        }))
+      )
     ].sort((a, b) => b.year - a.year),
     [centers, labs]
   );
@@ -77,29 +89,6 @@ function ResearchView({ centers, labs }: ResearchViewProps) {
     return pages;
   };
 
-  const handleDownload = (title: string) => {
-    try {
-      const binary = atob(blankPdfBase64);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i += 1) {
-        bytes[i] = binary.charCodeAt(i);
-      }
-
-      const pdfBlob = new Blob([bytes], { type: 'application/pdf' });
-      const url = URL.createObjectURL(pdfBlob);
-      const pdfWindow = window.open(url, '_blank');
-      if (pdfWindow) {
-        pdfWindow.document.title = `Investigación - ${title}`;
-      }
-
-      setTimeout(() => {
-        URL.revokeObjectURL(url);
-      }, 60_000);
-    } catch (error) {
-      console.error('Error al generar el PDF temporal:', error);
-    }
-  };
-
   return (
     <div className="mt-6">
       <h1 className="text-3xl font-bold text-gray-950 mb-6">Investigaciones Realizadas</h1>
@@ -116,7 +105,7 @@ function ResearchView({ centers, labs }: ResearchViewProps) {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {currentPublications.map((pub, index) => (
               <div
-                key={`${pub.source}-${pub.title}-${pub.year}-${index}`}
+                key={`${pub.sourceId}-${pub.title}-${pub.year}-${index}`}
                 className="bg-white border border-blue-100 rounded-lg p-6 hover:shadow-md transition-shadow flex flex-col"
               >
                 <div className="flex items-start space-x-4">
@@ -132,14 +121,14 @@ function ResearchView({ centers, labs }: ResearchViewProps) {
                       <span>{pub.year}</span>
                     </div>
                     <div className="flex items-center space-x-2 mt-3">
-                      {pub.type === 'Centro' ? (
+                      {pub.sourceType === 'Centro' ? (
                         <Building2 className="h-4 w-4 text-gray-600" />
                       ) : (
                         <FlaskConical className="h-4 w-4 text-gray-600" />
                       )}
-                      <span className="text-sm text-gray-600">{pub.source}</span>
+                      <span className="text-sm text-gray-600">{pub.sourceName}</span>
                       <span className="text-xs text-gray-600 bg-blue-100 px-2 py-1 rounded">
-                        {pub.type}
+                        {pub.sourceType}
                       </span>
                     </div>
                   </div>
@@ -147,12 +136,12 @@ function ResearchView({ centers, labs }: ResearchViewProps) {
 
                 <button
                   type="button"
-                  onClick={() => handleDownload(pub.title)}
+                  onClick={() => onViewPublication(pub)}
                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-primary-blue px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-500"
-                  aria-label={`Descargar investigación ${pub.title}`}
+                  aria-label={`Ver investigación ${pub.title}`}
                 >
-                  <Download className="h-4 w-4" />
-                  Descargar investigación
+                  <Eye className="h-4 w-4" />
+                  Ver investigación
                 </button>
               </div>
             ))}

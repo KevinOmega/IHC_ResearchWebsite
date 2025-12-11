@@ -4,18 +4,23 @@ import Breadcrumbs from './components/Breadcrumbs';
 import GridListing from './components/GridListing';
 import DetailView from './components/DetailView';
 import ResearchView from './components/ResearchView';
+import ResearchDetailView from './components/ResearchDetailView';
 import { researchCenters, laboratories } from './data/mockData';
-import type { Center, Lab } from './types';
+import type { Center, Lab, ResearchPublicationDetail } from './types';
 
-type View = 'home' | 'centers' | 'labs' | 'detail' | 'research';
+type View = 'home' | 'centers' | 'labs' | 'detail' | 'research' | 'researchDetail';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
   const [selectedItem, setSelectedItem] = useState<Center | Lab | null>(null);
+  const [selectedPublication, setSelectedPublication] = useState<ResearchPublicationDetail | null>(null);
   const [breadcrumbs, setBreadcrumbs] = useState<string[]>(['Inicio']);
 
   const handleNavigate = (view: View, item?: Center | Lab) => {
     setCurrentView(view);
+    if (view !== 'researchDetail') {
+      setSelectedPublication(null);
+    }
     if (item) {
       setSelectedItem(item);
       const isCenter = researchCenters.some(c => c.id === item.id);
@@ -32,10 +37,19 @@ function App() {
         setBreadcrumbs(['Inicio', 'Laboratorios']);
       } else if (view === 'research') {
         setBreadcrumbs(['Inicio', 'Investigaciones Realizadas']);
+      } else if (view === 'researchDetail' && selectedPublication) {
+        setBreadcrumbs(['Inicio', 'Investigaciones Realizadas', selectedPublication.title]);
       } else {
         setBreadcrumbs(['Inicio']);
       }
     }
+  };
+
+  const handleViewPublication = (publication: ResearchPublicationDetail) => {
+    setSelectedItem(null);
+    setSelectedPublication(publication);
+    setCurrentView('researchDetail');
+    setBreadcrumbs(['Inicio', 'Investigaciones Realizadas', publication.title]);
   };
 
   const handleSearch = (query: string, resultItem?: { id: string; type: 'centro' | 'laboratorio' }) => {
@@ -91,7 +105,11 @@ function App() {
         )}
 
         {currentView === 'research' && (
-          <ResearchView centers={researchCenters} labs={laboratories} />
+          <ResearchView centers={researchCenters} labs={laboratories} onViewPublication={handleViewPublication} />
+        )}
+
+        {currentView === 'researchDetail' && selectedPublication && (
+          <ResearchDetailView publication={selectedPublication} />
         )}
       </div>
     </div>
