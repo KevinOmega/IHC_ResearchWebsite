@@ -18,7 +18,7 @@ function DetailView({ item }: DetailViewProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Formulario enviado:', formData);
+    console.log('Formulario enviado exitosamente!:', formData);
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
